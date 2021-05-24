@@ -50,6 +50,8 @@ module.exports = ({ config }) => {
   config.resolve.alias = {
     '@core': path.resolve(__dirname, '../src/core'),
     "@renderer": path.resolve(__dirname, '../src/renderer'),
+    "@utils": path.resolve(__dirname, '../src/utils'),
+    "@source": path.resolve(__dirname, '../src/source'),
   }
 
   config.resolve.extensions.push('.ts', '.tsx', 'css', '.js', '.glsl');

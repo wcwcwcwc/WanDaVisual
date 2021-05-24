@@ -8,5 +8,9 @@ const TYPES = {
   IRendererService: Symbol.for('IRendererService'),
   IGlobalConfigService: Symbol.for('IGlobalConfigService'),
   IShaderModuleService: Symbol.for('IShaderModuleService'),
+  ILayerPlugin: Symbol.for('ILayerPlugin'),
+  IStyleAttributeService: Symbol.for('IStyleAttributeService'),
+  IMultiPassRenderer: Symbol.for('IMultiPassRenderer'),
+  IEventEmitter: Symbol.for('IEventEmitter'),
 };
 export { TYPES };

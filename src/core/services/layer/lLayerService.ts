@@ -93,85 +93,98 @@ export interface ILayer {
   dataState: IDataState; // 数据流状态
   pickedFeatureID: number | null;
   hooks: {
-    init: SyncBailHook<unknown, unknown>;
-    afterInit: SyncBailHook<unknown, unknown>;
-    beforeRenderData: SyncWaterfallHook<unknown, unknown>;
-    beforeRender: SyncBailHook<unknown, unknown>;
-    afterRender: SyncHook<unknown, unknown>;
-    beforePickingEncode: SyncHook<unknown, unknown>;
-    afterPickingEncode: SyncHook<unknown, unknown>;
-    beforeHighlight: SyncHook<unknown, unknown>;
-    beforeSelect: SyncHook<unknown, unknown>;
-    afterSelect: SyncHook<unknown, unknown>;
-    afterHighlight: SyncHook<unknown, unknown>;
-    beforeDestroy: SyncHook<unknown, unknown>;
-    afterDestroy: SyncHook<unknown, unknown>;
+    // @ts-ignore
+    init: SyncBailHook;
+    // @ts-ignore
+    afterInit: SyncBailHook;
+    // @ts-ignore
+    beforeRenderData: SyncWaterfallHook;
+    // @ts-ignore
+    beforeRender: SyncBailHook;
+    // @ts-ignore
+    afterRender: SyncHook;
+    // @ts-ignore
+    beforePickingEncode: SyncHook;
+    // @ts-ignore
+    afterPickingEncode: SyncHook;
+    // @ts-ignore
+    beforeHighlight: SyncHook;
+    // @ts-ignore
+    beforeSelect: SyncHook;
+    // @ts-ignore
+    afterSelect: SyncHook;
+    // @ts-ignore
+    afterHighlight: SyncHook;
+    // @ts-ignore
+    beforeDestroy: SyncHook;
+    // @ts-ignore
+    afterDestroy: SyncHook;
   };
   models: IModel[];
   sourceOption: {
     data: any;
   };
   // multiPassRenderer: IMultiPassRenderer;
-  needPick(type: string): boolean;
+  // needPick(type: string): boolean;
   getLayerConfig(): Partial<ILayerConfig & ISceneConfig>;
   getContainer(): Container;
   setContainer(container: Container): void;
-  setCurrentPickId(id: number | null): void;
-  getCurrentPickId(): number | null;
-  setCurrentSelectedId(id: number | null): void;
-  getCurrentSelectedId(): number | null;
-  prepareBuildModel(): void;
-  renderModels(): void;
-  buildModels(): void;
-  rebuildModels(): void;
-  buildLayerModel(
-    options: ILayerModelInitializationOptions &
-      Partial<IModelInitializationOptions>
-  ): IModel;
-  init(): ILayer;
-  scale(field: string | number | IScaleOptions, cfg?: IScale): ILayer;
-  size(field: StyleAttrField, value?: StyleAttributeOption): ILayer;
-  color(field: StyleAttrField, value?: StyleAttributeOption): ILayer;
-  shape(field: StyleAttrField, value?: StyleAttributeOption): ILayer;
-  label(field: StyleAttrField, value?: StyleAttributeOption): ILayer;
-  animate(option: Partial<IAnimateOption> | boolean): ILayer;
+  // setCurrentPickId(id: number | null): void;
+  // getCurrentPickId(): number | null;
+  // setCurrentSelectedId(id: number | null): void;
+  // getCurrentSelectedId(): number | null;
+  // prepareBuildModel(): void;
+  // renderModels(): void;
+  // buildModels(): void;
+  // rebuildModels(): void;
+  // buildLayerModel(
+  //   options: ILayerModelInitializationOptions &
+  //     Partial<IModelInitializationOptions>
+  // ): IModel;
+  init();
+  // scale(field: string | number | IScaleOptions, cfg?: IScale);
+  size(field: StyleAttrField, value?: StyleAttributeOption);
+  color(field: StyleAttrField, value?: StyleAttributeOption);
+  shape(field: StyleAttrField, value?: StyleAttributeOption);
+  // label(field: StyleAttrField, value?: StyleAttributeOption);
+  // animate(option: Partial<IAnimateOption> | boolean): ILayer;
   // pattern(field: string, value: StyleAttributeOption): ILayer;
-  filter(field: string, value: StyleAttributeOption): ILayer;
-  active(option: IActiveOption | boolean): ILayer;
-  setActive(
-    id: number | { x: number; y: number },
-    option?: IActiveOption
-  ): void;
-  select(option: IActiveOption | boolean): ILayer;
-  setSelect(
-    id: number | { x: number; y: number },
-    option?: IActiveOption
-  ): void;
-  style(options: unknown): ILayer;
-  hide(): ILayer;
-  show(): ILayer;
-  getLegendItems(name: string): any;
-  setIndex(index: number): ILayer;
+  // filter(field: string, value: StyleAttributeOption): ILayer;
+  // active(option: IActiveOption | boolean): ILayer;
+  // setActive(
+  //   id: number | { x: number; y: number },
+  //   option?: IActiveOption
+  // ): void;
+  // select(option: IActiveOption | boolean): ILayer;
+  // setSelect(
+  //   id: number | { x: number; y: number },
+  //   option?: IActiveOption
+  // ): void;
+  // style(options: unknown);
+  // hide(): ILayer;
+  // show(): ILayer;
+  // getLegendItems(name: string): any;
+  // setIndex(index: number): ILayer;
   isVisible(): boolean;
-  setMaxZoom(min: number): ILayer;
-  setMinZoom(max: number): ILayer;
-  getMinZoom(): number;
-  getMaxZoom(): number;
-  get(name: string): number;
-  setBlend(type: keyof typeof BlendType): void;
+  // setMaxZoom(min: number): ILayer;
+  // setMinZoom(max: number): ILayer;
+  // getMinZoom(): number;
+  // getMaxZoom(): number;
+  // get(name: string): number;
+  // setBlend(type: keyof typeof BlendType): void;
   // animate(field: string, option: any): ILayer;
-  render(): ILayer;
-  clear(): void;
-  clearModels(): void;
+  render();
+  // clear(): void;
+  // clearModels(): void;
   destroy(): void;
-  source(data: any): ILayer;
-  setData(data: any): ILayer;
-  fitBounds(fitBoundsOptions?: unknown): ILayer;
+  source(data: any);
+  // setData(data: any): ILayer;
+  // fitBounds(fitBoundsOptions?: unknown): ILayer;
   /**
    * 向当前图层注册插件
    * @param plugin 插件实例
    */
-  addPlugin(plugin: ILayerPlugin): ILayer;
+  addPlugin(plugin: ILayerPlugin);
   getSource(): any;
   setSource(source: any): void;
   setEncodedData(encodedData: IEncodeFeature[]): void;
@@ -181,27 +194,27 @@ export interface ILayer {
   /**
    * 事件
    */
-  on(type: string, handler: (...args: any[]) => void): void;
-  off(type: string, handler: (...args: any[]) => void): void;
-  emit(type: string, handler: unknown): void;
-  once(type: string, handler: (...args: any[]) => void): void;
+  // on(type: string, handler: (...args: any[]) => void): void;
+  // off(type: string, handler: (...args: any[]) => void): void;
+  // emit(type: string, handler: unknown): void;
+  // once(type: string, handler: (...args: any[]) => void): void;
   /**
    * JSON Schema 用于校验配置项
    */
-  getConfigSchemaForValidation(): object;
-  isDirty(): boolean;
+  // getConfigSchemaForValidation(): object;
+  // isDirty(): boolean;
   /**
    * 直接调用拾取方法，在非鼠标交互场景中使用
    */
-  pick(query: { x: number; y: number }): void;
-  boxSelect(
-    box: [number, number, number, number],
-    cb: (...args: any[]) => void
-  ): void;
+  // pick(query: { x: number; y: number }): void;
+  // boxSelect(
+  //   box: [number, number, number, number],
+  //   cb: (...args: any[]) => void
+  // ): void;
 
   updateLayerConfig(configToUpdate: Partial<ILayerConfig | unknown>): void;
-  setAnimateStartTime(): void;
-  getLayerAnimateTime(): number;
+  // setAnimateStartTime(): void;
+  // getLayerAnimateTime(): number;
 }
 
 /**

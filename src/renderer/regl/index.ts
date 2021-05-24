@@ -43,7 +43,7 @@ export default class ReglRendererService implements IRendererService {
 
   public async init(
     canvas: HTMLCanvasElement,
-    cfg: IRenderConfig,
+    cfg: IRenderConfig
   ): Promise<void> {
     // this.$container = $container;
     this.canvas = canvas;
@@ -77,6 +77,7 @@ export default class ReglRendererService implements IRendererService {
           if (err || !r) {
             reject(err);
           }
+          // @ts-ignore
           resolve(r);
         },
       });
@@ -87,18 +88,18 @@ export default class ReglRendererService implements IRendererService {
     new ReglModel(this.gl, options);
 
   public createAttribute = (
-    options: IAttributeInitializationOptions,
+    options: IAttributeInitializationOptions
   ): IAttribute => new ReglAttribute(this.gl, options);
 
   public createBuffer = (options: IBufferInitializationOptions): IBuffer =>
     new ReglBuffer(this.gl, options);
 
   public createElements = (
-    options: IElementsInitializationOptions,
+    options: IElementsInitializationOptions
   ): IElements => new ReglElements(this.gl, options);
 
   public createTexture2D = (
-    options: ITexture2DInitializationOptions,
+    options: ITexture2DInitializationOptions
   ): ITexture2D => new ReglTexture2D(this.gl, options);
 
   public createFramebuffer = (options: IFramebufferInitializationOptions) =>
@@ -106,7 +107,7 @@ export default class ReglRendererService implements IRendererService {
 
   public useFramebuffer = (
     framebuffer: IFramebuffer | null,
-    drawCommands: () => void,
+    drawCommands: () => void
   ) => {
     this.gl({
       framebuffer: framebuffer ? (framebuffer as ReglFramebuffer).get() : null,

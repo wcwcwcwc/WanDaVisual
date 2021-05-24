@@ -8,10 +8,13 @@ import {
   IRendererService,
   ISceneService,
   ILayerService,
+  ILayer,
+  createLayerContainer,
+  SceneEventList,
 } from '@core';
 import MapboxMap from '../map/mapbox/map';
 import { ReglRendererService } from '@renderer';
-export default class sence {
+export default class Sence {
   private container: Container;
   private mapService: IMapService;
   private sceneService: ISceneService;
@@ -41,7 +44,7 @@ export default class sence {
     this.mapService = this.container.get<IMapService>(TYPES.IMapService);
     this.sceneService = this.container.get<ISceneService>(TYPES.ISceneService);
     this.layerService = this.container.get<ILayerService>(TYPES.ILayerService);
-    // // //相机初始化，绑定move事件
+    //相机初始化，绑定move事件
     this.mapService.initMap();
     // 初始化 scene
     this.sceneService.init(config);
@@ -51,7 +54,24 @@ export default class sence {
   //获取场景容器canvas
   getContainer() {}
   //场景添加图层
-  addLayer() {}
+  addLayer(layer: ILayer) {
+    // 为当前图层创建一个容器
+    const layerContainer = createLayerContainer(this.container);
+    layer.setContainer(layerContainer);
+    this.sceneService.addLayer(layer);
+  }
   //移除当前场景，移除此场景的全部图层
   remove() {}
+
+  public on(type: string, handle: (...args: any[]) => void): void {
+    if (SceneEventList.indexOf(type) !== -1) {
+      this.sceneService.on(type, handle);
+    }
+  }
+
+  public off(type: string, handle: (...args: any[]) => void): void {
+    if (SceneEventList.indexOf(type) !== -1) {
+      this.sceneService.off(type, handle);
+    }
+  }
 }

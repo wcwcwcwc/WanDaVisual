@@ -118,6 +118,7 @@ export default class GlobalConfigService implements IGlobalConfigService {
 
   public setSceneConfig(sceneId: string, config: Partial<ISceneConfig>) {
     this.sceneConfigCache[sceneId] = {
+      ...{ id: sceneId },
       ...defaultSceneConfig,
       ...config,
     };

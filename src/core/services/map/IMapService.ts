@@ -1,4 +1,5 @@
 //抽象地图接口
+import { IViewport } from '../camera/ICameraService';
 export type Point = [number, number];
 export type Bounds = [[number, number], [number, number]];
 export interface ILngLat {
@@ -46,6 +47,8 @@ export interface IMapService {
   off(type: string, handler: (...args: any[]) => void): void;
   init(): void;
   initMap(): void;
+  onCameraChanged(callback: (viewport: IViewport) => void): void;
+  destroy(): void;
 }
 
 export interface IMapConfig {

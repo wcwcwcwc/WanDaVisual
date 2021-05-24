@@ -36,7 +36,10 @@ export default class MapboxMap implements IMapService {
       cameraHeight: 0,
     });
     // console.log('move');
-    //this.cameraChangedCallback(this.viewport);
+    this.cameraChangedCallback(this.viewport);
+  }
+  public onCameraChanged(callback: (viewport: IViewport) => void): void {
+    this.cameraChangedCallback = callback;
   }
 
   //  map event
@@ -150,5 +153,11 @@ export default class MapboxMap implements IMapService {
 
   public lngLatToPixel(lnglat: [number, number]): IPoint {
     return this.map.project(lnglat);
+  }
+  public destroy() {
+    if (this.map) {
+      this.map.remove();
+      this.$mapContainer = null;
+    }
   }
 }

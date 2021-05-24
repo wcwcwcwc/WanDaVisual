@@ -59,7 +59,7 @@ export default class LayerService implements ILayerService {
     if (layerIndex > -1) {
       this.layers.splice(layerIndex, 1);
     }
-    layer.emit('remove', null);
+    // layer.emit('remove', null);
     layer.destroy();
     this.renderLayers();
   }

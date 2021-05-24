@@ -15,3 +15,5 @@ export * from './renderer/IRendererService';
 export * from './renderer/ITexture2D';
 export * from './renderer/IUniform';
 export * from './renderer/gl';
+export * from './config/IGlobalConfigService';
+export * from './source/ISourceService'

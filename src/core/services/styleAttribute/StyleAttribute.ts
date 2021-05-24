@@ -51,7 +51,7 @@ export default class StyleAttribute implements IStyleAttribute {
   public setProps(options: Partial<IStyleAttributeInitializationOptions>) {
     Object.assign(this, options);
   }
-
+  //进行数据映射
   public mapping(params: unknown[]): unknown[] {
     /**
      * 当用户设置的 callback 返回 null 时, 应该返回默认 callback 中的值

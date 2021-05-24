@@ -189,6 +189,10 @@
     "mode": "yarn"
   },
   "dependencies": {
+    "@mapbox/geojson-rewind": "^0.4.0",
+    "d3-color": "^1.4.0",
+    "d3-scale": "^2.2.2",
+    "element-resize-event": "^3.0.3",
     "inversify": "^5.0.1",
     "inversify-inject-decorators": "^3.1.0",
     "reflect-metadata": "^0.1.13",
