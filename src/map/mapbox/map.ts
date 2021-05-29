@@ -2,7 +2,19 @@ import { IMapService } from '../../core/services/map/IMapService';
 import mapboxgl, { IControl, Map } from 'mapbox-gl';
 import { inject, injectable } from 'inversify';
 import Viewport from './viewport';
-import { TYPES, IMapConfig, ILngLat, Bounds, IPoint, IViewport } from '@core';
+import {
+  TYPES,
+  IMapConfig,
+  ILngLat,
+  Bounds,
+  IPoint,
+  IViewport,
+  ICoordinateSystemService,
+  CoordinateSystem,
+} from '@core';
+
+//默认偏移坐标层级是12，大于12是偏移坐标系
+const LNGLAT_OFFSET_ZOOM_THRESHOLD = 12;
 
 @injectable()
 export default class MapboxMap implements IMapService {
@@ -10,6 +22,10 @@ export default class MapboxMap implements IMapService {
 
   @inject(TYPES.MapConfig)
   private readonly config: IMapConfig;
+
+  @inject(TYPES.ICoordinateSystemService)
+  private readonly coordinateSystemService: ICoordinateSystemService;
+
   private $mapContainer: HTMLElement | null;
   private cameraChangedCallback: (viewport: IViewport) => void;
   private viewport: Viewport;
@@ -35,6 +51,14 @@ export default class MapboxMap implements IMapService {
       // mapbox 中固定相机高度为 viewport 高度的 1.5 倍
       cameraHeight: 0,
     });
+    // set coordinate system
+    if (this.viewport.getZoom() > LNGLAT_OFFSET_ZOOM_THRESHOLD) {
+      this.coordinateSystemService.setCoordinateSystem(
+        CoordinateSystem.LNGLAT_OFFSET
+      );
+    } else {
+      this.coordinateSystemService.setCoordinateSystem(CoordinateSystem.LNGLAT);
+    }
     // console.log('move');
     this.cameraChangedCallback(this.viewport);
   }

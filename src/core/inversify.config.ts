@@ -11,6 +11,7 @@ import { ICameraService } from './services/camera/ICameraService';
 import { IGlobalConfigService } from './services/config/IGlobalConfigService';
 import { IShaderModuleService } from './services/shader/IShaderModuleService';
 import { IStyleAttributeService } from './services/styleAttribute/IStyleAttributeService';
+import { ICoordinateSystemService } from './services/coordinate/ICoordinateSystemService';
 
 //实体服务
 import LayerService from './services/layer/LayerService';
@@ -19,6 +20,7 @@ import CameraService from './services/camera/CameraService';
 import GlobalConfigService from './services/config/GlobalConfigService';
 import ShaderModuleService from './services/shader/ShaderModuleService';
 import StyleAttributeService from './services/styleAttribute/StyleAttributeService';
+import CoordinateSystemService from './services/coordinate/CoordinateSystemService';
 
 const container = new Container();
 
@@ -81,6 +83,10 @@ export function setScene() {
   sceneContainer
     .bind<ICameraService>(TYPES.ICameraService)
     .to(CameraService)
+    .inSingletonScope();
+  sceneContainer
+    .bind<ICoordinateSystemService>(TYPES.ICoordinateSystemService)
+    .to(CoordinateSystemService)
     .inSingletonScope();
 
   return sceneContainer;

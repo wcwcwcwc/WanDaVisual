@@ -8,6 +8,7 @@ import { IRendererService, IRenderConfig } from '../renderer/IRendererService';
 import { ILayerService, ILayer } from '../layer/lLayerService';
 import { ICameraService, IViewport } from '../camera/ICameraService';
 import { IShaderModuleService } from '../shader/IShaderModuleService';
+import { ICoordinateSystemService } from '../coordinate/ICoordinateSystemService';
 import { createRendererContainer } from '../../utils/dom';
 import { DOM } from '@utils';
 import { EventEmitter } from 'eventemitter3';
@@ -34,6 +35,9 @@ export default class Scene extends EventEmitter implements ISceneService {
 
   @inject(TYPES.IShaderModuleService)
   private readonly shaderModuleService: IShaderModuleService;
+
+  @inject(TYPES.ICoordinateSystemService)
+  private readonly coordinateSystemService: ICoordinateSystemService;
 
   public destroyed: boolean = false;
 
@@ -100,6 +104,7 @@ export default class Scene extends EventEmitter implements ISceneService {
 
   public addLayer(layer: ILayer): void {
     this.layerService.add(layer);
+    this.render()
   }
   // public getSceneConfig(): Partial<ISceneConfig> {}
   public render(): void {
@@ -157,7 +162,7 @@ export default class Scene extends EventEmitter implements ISceneService {
     if (this.$container) {
       this.initContainer();
       DOM.triggerResize();
-      // this.coordinateSystemService.needRefresh = true;
+      this.coordinateSystemService.needRefresh = true;
 
       //  repaint layers
       this.render();

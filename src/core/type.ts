@@ -12,5 +12,6 @@ const TYPES = {
   IStyleAttributeService: Symbol.for('IStyleAttributeService'),
   IMultiPassRenderer: Symbol.for('IMultiPassRenderer'),
   IEventEmitter: Symbol.for('IEventEmitter'),
+  ICoordinateSystemService: Symbol.for('ICoordinateSystemService'),
 };
 export { TYPES };

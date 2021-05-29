@@ -20,6 +20,7 @@ const includeRegExp = /#pragma include (["^+"]?["\ "[a-zA-Z_0-9](.*)"]*?)/g;
 
 @injectable()
 export default class ShaderModuleService implements IShaderModuleService {
+  //moduleCache：已经构建好的shader对象，包含模块引用好的vs，fs以及提取好的uniform
   private moduleCache: { [key: string]: IModuleParams } = {};
   private rawContentCache: { [key: string]: IModuleParams } = {};
 
@@ -66,7 +67,7 @@ export default class ShaderModuleService implements IShaderModuleService {
 
     const rawVS = this.rawContentCache[moduleName].vs;
     const rawFS = this.rawContentCache[moduleName].fs;
-
+    //提取着色器中的模块引用，合并着色器
     const { content: vs, includeList: vsIncludeList } = this.processModule(
       rawVS,
       [],
@@ -79,6 +80,7 @@ export default class ShaderModuleService implements IShaderModuleService {
     );
     let compiledFs = fs;
     // TODO: extract uniforms and their default values from GLSL
+    //合并提取好的uniforms值
     const uniforms: {
       [key: string]: any;
     } = uniq(vsIncludeList.concat(fsIncludeList).concat(moduleName)).reduce(

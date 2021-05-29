@@ -133,14 +133,14 @@ export interface ILayer {
   // getCurrentPickId(): number | null;
   // setCurrentSelectedId(id: number | null): void;
   // getCurrentSelectedId(): number | null;
-  // prepareBuildModel(): void;
+  prepareBuildModel(): void;
   // renderModels(): void;
-  // buildModels(): void;
+  buildModels(): void;
   // rebuildModels(): void;
-  // buildLayerModel(
-  //   options: ILayerModelInitializationOptions &
-  //     Partial<IModelInitializationOptions>
-  // ): IModel;
+  buildLayerModel(
+    options: ILayerModelInitializationOptions &
+      Partial<IModelInitializationOptions>
+  ): IModel;
   init();
   // scale(field: string | number | IScaleOptions, cfg?: IScale);
   size(field: StyleAttrField, value?: StyleAttributeOption);
@@ -213,8 +213,8 @@ export interface ILayer {
   // ): void;
 
   updateLayerConfig(configToUpdate: Partial<ILayerConfig | unknown>): void;
-  // setAnimateStartTime(): void;
-  // getLayerAnimateTime(): number;
+  setAnimateStartTime(): void;
+  getLayerAnimateTime(): number;
 }
 
 /**

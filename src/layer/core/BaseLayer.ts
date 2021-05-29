@@ -23,11 +23,16 @@ import {
   StyleAttributeOption,
   IStyleAttributeUpdateOptions,
   IScaleOptions,
+  ICoordinateSystemService,
+  ILayerModelInitializationOptions,
+  IModelInitializationOptions,
+  BlendType,
 } from '@core';
 import { Source } from '@source';
 import { Container } from 'inversify';
 import { isFunction, isObject } from 'lodash';
 import { SyncBailHook, SyncHook, SyncWaterfallHook } from 'tapable';
+import { BlendTypes } from '../utils/blend';
 
 /**
  * 分配 layer id
@@ -59,7 +64,7 @@ export default class BaseLayer<ChildLayerStyleOptions = {}> implements ILayer {
     init: new SyncBailHook(),
     afterInit: new SyncBailHook(),
     beforeRender: new SyncBailHook(),
-    beforeRenderData: new SyncWaterfallHook(['nothing']),  //SyncWaterfallHook必传一个参数，此处nothing无意义
+    beforeRenderData: new SyncWaterfallHook(['nothing']), //SyncWaterfallHook必传一个参数，此处nothing无意义
     afterRender: new SyncHook(),
     beforePickingEncode: new SyncHook(),
     afterPickingEncode: new SyncHook(),
@@ -100,6 +105,8 @@ export default class BaseLayer<ChildLayerStyleOptions = {}> implements ILayer {
   protected layerService: ILayerService;
 
   protected mapService: IMapService;
+
+  protected coordinateService: ICoordinateSystemService;
 
   protected styleAttributeService: IStyleAttributeService;
 
@@ -244,6 +251,9 @@ export default class BaseLayer<ChildLayerStyleOptions = {}> implements ILayer {
     this.cameraService = this.container.get<ICameraService>(
       TYPES.ICameraService
     );
+    this.coordinateService = this.container.get<ICoordinateSystemService>(
+      TYPES.ICoordinateSystemService
+    );
 
     //图层容器服务
     this.styleAttributeService = this.container.get<IStyleAttributeService>(
@@ -292,6 +302,21 @@ export default class BaseLayer<ChildLayerStyleOptions = {}> implements ILayer {
     //@ts-ignore
     this.hooks.afterInit.call();
     return this;
+  }
+
+  public prepareBuildModel() {
+    this.inited = true;
+    this.updateLayerConfig({
+      ...(this.getDefaultConfig() as object),
+      ...this.rawConfig,
+    });
+
+    // 启动动画
+    const { animateOption } = this.getLayerConfig();
+    if (animateOption?.enable) {
+      this.layerService.startAnimate();
+      this.aniamateStatus = true;
+    }
   }
   public color(
     field: StyleAttributeField,
@@ -413,5 +438,54 @@ export default class BaseLayer<ChildLayerStyleOptions = {}> implements ILayer {
 
   public getScaleOptions() {
     return this.scaleOptions;
+  }
+  protected getDefaultConfig() {
+    return {};
+  }
+  public buildModels() {
+    throw new Error('Method not implemented.');
+  }
+  public setAnimateStartTime() {
+    this.animateStartTime = this.layerService.clock.getElapsedTime();
+  }
+  public getLayerAnimateTime(): number {
+    return this.layerService.clock.getElapsedTime() - this.animateStartTime;
+  }
+  public buildLayerModel(
+    options: ILayerModelInitializationOptions &
+      Partial<IModelInitializationOptions>
+  ): IModel {
+    const {
+      moduleName,
+      vertexShader,
+      fragmentShader,
+      triangulation,
+      ...rest
+    } = options;
+    this.shaderModuleService.registerModule(moduleName, {
+      vs: vertexShader,
+      fs: fragmentShader,
+    });
+    const { vs, fs, uniforms } = this.shaderModuleService.getModule(moduleName);
+    //vs、fs:包含模块引用后的着色器
+    //uniforms：包含提取后的uniforms
+    console.log(uniforms);
+    const { createModel } = this.rendererService;
+    const {
+      attributes,
+      elements,
+    } = this.styleAttributeService.createAttributesAndIndices(
+      this.encodedData,
+      triangulation
+    );
+    return createModel({
+      attributes,
+      uniforms,
+      fs,
+      vs,
+      elements,
+      blend: BlendTypes[BlendType.normal],
+      ...rest,
+    });
   }
 }

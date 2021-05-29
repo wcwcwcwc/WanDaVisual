@@ -44,5 +44,12 @@ export default class DataSourcePlugin implements ILayerPlugin {
       const { data } = layer.sourceOption;
       layer.setSource(new Source(data));
     });
+
+    // 检测数据是否需要更新
+    layer.hooks.beforeRenderData.tap('DataSourcePlugin', () => {
+      const dataSourceNeedUpdate = layer.dataState.dataSourceNeedUpdate;
+      layer.dataState.dataSourceNeedUpdate = false;
+      return dataSourceNeedUpdate;
+    });
   }
 }
