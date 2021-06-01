@@ -164,7 +164,7 @@ export default class ReglModel implements IModel {
    */
   private initDepthDrawParams(
     { depth }: Pick<IModelInitializationOptions, 'depth'>,
-    drawParams: regl.DrawConfig,
+    drawParams: regl.DrawConfig
   ) {
     if (depth) {
       drawParams.depth = {
@@ -181,7 +181,7 @@ export default class ReglModel implements IModel {
    */
   private initBlendDrawParams(
     { blend }: Pick<IModelInitializationOptions, 'blend'>,
-    drawParams: regl.DrawConfig,
+    drawParams: regl.DrawConfig
   ) {
     if (blend) {
       const { enable, func, equation, color = [0, 0, 0, 0] } = blend;
@@ -209,7 +209,7 @@ export default class ReglModel implements IModel {
    */
   private initStencilDrawParams(
     { stencil }: Pick<IModelInitializationOptions, 'stencil'>,
-    drawParams: regl.DrawConfig,
+    drawParams: regl.DrawConfig
   ) {
     if (stencil) {
       const {
@@ -257,7 +257,7 @@ export default class ReglModel implements IModel {
    */
   private initCullDrawParams(
     { cull }: Pick<IModelInitializationOptions, 'cull'>,
-    drawParams: regl.DrawConfig,
+    drawParams: regl.DrawConfig
   ) {
     if (cull) {
       const { enable, face = gl.BACK } = cull;
@@ -284,7 +284,7 @@ export default class ReglModel implements IModel {
         uniformName,
         uniforms[uniformName],
         extractedUniforms,
-        '',
+        ''
       );
     });
 
@@ -297,7 +297,7 @@ export default class ReglModel implements IModel {
     uniforms: {
       [key: string]: IUniform;
     },
-    prefix: string,
+    prefix: string
   ) {
     if (
       uniformValue === null ||
@@ -321,7 +321,7 @@ export default class ReglModel implements IModel {
           // @ts-ignore
           uniformValue[childName],
           uniforms,
-          `${prefix && prefix + '.'}${uniformName}`,
+          `${prefix && prefix + '.'}${uniformName}`
         );
       });
     }
@@ -335,7 +335,7 @@ export default class ReglModel implements IModel {
             // @ts-ignore
             child[childName],
             uniforms,
-            `${prefix && prefix + '.'}${uniformName}[${idx}]`,
+            `${prefix && prefix + '.'}${uniformName}[${idx}]`
           );
         });
       });

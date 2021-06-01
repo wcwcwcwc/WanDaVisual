@@ -40,7 +40,7 @@ void main() {
   // construct point coords
   v_data = vec4(extrude, antialiasblur,shape_type);
 
-  setPickingColor(a_PickingColor);
+  //setPickingColor(a_PickingColor);
 
   gl_Position = project_common_position_to_clipspace(vec4(project_pos.xy + offset, 0.0, 1.0));
 

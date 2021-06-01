@@ -64,7 +64,8 @@ export default class BaseLayer<ChildLayerStyleOptions = {}> implements ILayer {
     init: new SyncBailHook(),
     afterInit: new SyncBailHook(),
     beforeRender: new SyncBailHook(),
-    beforeRenderData: new SyncWaterfallHook(['nothing']), //SyncWaterfallHook必传一个参数，此处nothing无意义
+    //@ts-ignore
+    beforeRenderData: new SyncWaterfallHook(['test']), //SyncWaterfallHook必传一个参数，此处test无意义
     afterRender: new SyncHook(),
     beforePickingEncode: new SyncHook(),
     afterPickingEncode: new SyncHook(),
@@ -193,6 +194,26 @@ export default class BaseLayer<ChildLayerStyleOptions = {}> implements ILayer {
   //@ts-ignore
   public addPlugin(plugin: ILayerPlugin) {
     this.plugins.push(plugin);
+    return this;
+  }
+  /**
+   * 动画设置
+   */
+  public animate(options: IAnimateOption | boolean) {
+    let rawAnimate: Partial<IAnimateOption> = {};
+    if (isObject(options)) {
+      rawAnimate.enable = true;
+      rawAnimate = {
+        ...rawAnimate,
+        ...options,
+      };
+    } else {
+      rawAnimate.enable = options;
+    }
+    this.updateLayerConfig({
+      animateOption: rawAnimate,
+    });
+    // this.animateOptions = options;
     return this;
   }
   /**
@@ -414,6 +435,7 @@ export default class BaseLayer<ChildLayerStyleOptions = {}> implements ILayer {
     //this.renderModels();
     // this.multiPassRenderer.render();
     // this.renderModels();
+    this.renderModels();
     return this;
   }
   public destroy() {}
@@ -469,7 +491,7 @@ export default class BaseLayer<ChildLayerStyleOptions = {}> implements ILayer {
     const { vs, fs, uniforms } = this.shaderModuleService.getModule(moduleName);
     //vs、fs:包含模块引用后的着色器
     //uniforms：包含提取后的uniforms
-    console.log(uniforms);
+
     const { createModel } = this.rendererService;
     const {
       attributes,
@@ -487,5 +509,19 @@ export default class BaseLayer<ChildLayerStyleOptions = {}> implements ILayer {
       blend: BlendTypes[BlendType.normal],
       ...rest,
     });
+  }
+  public renderModels() {
+    if (this.layerModelNeedUpdate && this.layerModel) {
+      this.models = this.layerModel.buildModels();
+      //@ts-ignore
+      this.hooks.beforeRender.call();
+      this.layerModelNeedUpdate = false;
+    }
+    this.models.forEach((model) => {
+      model.draw({
+        uniforms: this.layerModel.getUninforms(),
+      });
+    });
+    return this;
   }
 }

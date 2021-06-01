@@ -106,14 +106,14 @@ export interface IVertexAttributeDescriptor
     featureIdx: number,
     vertex: number[],
     attributeIdx: number,
-    normal: number[],
+    normal: number[]
   ) => number[];
 }
 
 type Position = number[];
 type Color = [number, number, number, number];
 type CallBack = (...args: any[]) => any;
-export type StyleAttributeField = string | string[] | number[];
+export type StyleAttributeField = string | number | string[] | number[];
 export type StyleAttributeOption = string | number | boolean | any[] | CallBack;
 export type StyleAttrField = string | string[] | number | number[];
 export interface IAttributeScale {
@@ -157,7 +157,7 @@ export interface IStyleAttribute extends IStyleAttributeInitializationOptions {
 }
 
 export type Triangulation = (
-  feature: IEncodeFeature,
+  feature: IEncodeFeature
 ) => {
   vertices: number[];
   indices: number[];
@@ -181,19 +181,19 @@ export interface IStyleAttributeService {
     elements: IElements;
   };
   registerStyleAttribute(
-    options: Partial<IStyleAttributeInitializationOptions>,
+    options: Partial<IStyleAttributeInitializationOptions>
   ): IStyleAttribute;
   updateStyleAttribute(
     attributeName: string,
     attributeOptions: Partial<IStyleAttributeInitializationOptions>,
-    updateOptions: IStyleAttributeUpdateOptions,
+    updateOptions: IStyleAttributeUpdateOptions
   ): void;
   getLayerStyleAttributes(): IStyleAttribute[] | undefined;
   getLayerStyleAttribute(attributeName: string): IStyleAttribute | undefined;
   getLayerAttributeScale(attributeName: string): any;
   createAttributesAndIndices(
     encodedFeatures: IEncodeFeature[],
-    triangulation?: Triangulation,
+    triangulation?: Triangulation
   ): {
     attributes: {
       [attributeName: string]: IAttribute;
@@ -207,7 +207,7 @@ export interface IStyleAttributeService {
     attributeName: string,
     features: IEncodeFeature[],
     startFeatureIdx?: number,
-    endFeatureIdx?: number,
+    endFeatureIdx?: number
   ): void;
   /**
    * 清除当前管理的所有属性

@@ -2,6 +2,7 @@ import { container, ILayerPlugin, TYPES } from '@core';
 import BaseLayer from './core/BaseLayer';
 import './glsl.d';
 import PointLayer from './point';
+import LineLayer from './line';
 
 import DataMappingPlugin from './plugins/DataMappingPlugin';
 import DataSourcePlugin from './plugins/DataSourcePlugin';
@@ -10,8 +11,8 @@ import RegisterStyleAttributePlugin from './plugins/RegisterStyleAttributePlugin
 import UpdateModelPlugin from './plugins/UpdateModelPlugin';
 import LayerModelPlugin from './plugins/LayerModelPlugin';
 import ShaderUniformPlugin from './plugins/ShaderUniformPlugin';
-import LayerAnimateStylePlugin from './plugins/LightingPlugin';
-
+import LayerAnimateStylePlugin from './plugins/LayerAnimateStylePlugin';
+import LightingPlugin from './plugins/LightingPlugin';
 /*
   图层生命周期流程————数据处理阶段
   1. 数据源转成相应格式，并完成数据源绑定
@@ -21,10 +22,14 @@ import LayerAnimateStylePlugin from './plugins/LightingPlugin';
 
   图层生命周期流程————模型生成阶段
   5. 初始化模型，生成regl对象，command命令;
-  ===== rerender ========
+    ======== rerender ========
   6. 模型更新：图层设置blend后，需要更新模型。设置颜色混合==>rerender==>重新生成模型
   7. 传入相机、坐标系uniforms
   8. 传入光照参数
+  9. 更新动画time参数
+  10. 绘制模型
+
+ 【注】：第一版不进行颜色拾取
 */
 
 container
@@ -60,7 +65,6 @@ container
   .bind<ILayerPlugin>(TYPES.ILayerPlugin)
   .to(UpdateModelPlugin)
   .inRequestScope();
-
 /**
  * 传入相机坐标系参数
  */
@@ -75,6 +79,15 @@ container
   .bind<ILayerPlugin>(TYPES.ILayerPlugin)
   .to(LayerAnimateStylePlugin)
   .inRequestScope();
+
+/**
+ * 传入光照相关参数
+ */
+container
+  .bind<ILayerPlugin>(TYPES.ILayerPlugin)
+  .to(LightingPlugin)
+  .inRequestScope();
+
 /**
  * 初始化Model
  */
@@ -82,4 +95,4 @@ container
   .bind<ILayerPlugin>(TYPES.ILayerPlugin)
   .to(LayerModelPlugin)
   .inRequestScope();
-export { PointLayer };
+export { PointLayer, LineLayer };

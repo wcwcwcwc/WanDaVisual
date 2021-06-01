@@ -58,7 +58,6 @@ export default class FeatureScalePlugin implements ILayerPlugin {
     { styleAttributeService }: { styleAttributeService: IStyleAttributeService }
   ) {
     layer.hooks.init.tap('FeatureScalePlugin', () => {
-      console.log('进入FeatureScalePlugin')
       this.scaleOptions = layer.getScaleOptions();
       const attributes = styleAttributeService.getLayerStyleAttributes();
       const { dataArray } = layer.getSource().data;
@@ -69,17 +68,24 @@ export default class FeatureScalePlugin implements ILayerPlugin {
     });
 
     // 检测数据是否需要更新
-    layer.hooks.beforeRenderData.tap('FeatureScalePlugin', () => {
-      this.scaleOptions = layer.getScaleOptions();
-      const attributes = styleAttributeService.getLayerStyleAttributes();
-      const { dataArray } = layer.getSource().data;
-      // if (dataArray.length === 0) {
-      //   return;
-      // }
-      this.caculateScalesForAttributes(attributes || [], dataArray);
-      layer.layerModelNeedUpdate = true;
-      return true;
-    });
+    layer.hooks.beforeRenderData.tap(
+      'FeatureScalePlugin',
+      (sourceNeedUpdate) => {
+        //sourceNeedUpdate:dataSource的返回值
+        if (!sourceNeedUpdate) {
+          return;
+        }
+        this.scaleOptions = layer.getScaleOptions();
+        const attributes = styleAttributeService.getLayerStyleAttributes();
+        const { dataArray } = layer.getSource().data;
+        // if (dataArray.length === 0) {
+        //   return;
+        // }
+        this.caculateScalesForAttributes(attributes || [], dataArray);
+        layer.layerModelNeedUpdate = true;
+        return true;
+      }
+    );
 
     layer.hooks.beforeRender.tap('FeatureScalePlugin', () => {
       if (layer.layerModelNeedUpdate) {
@@ -190,7 +196,7 @@ export default class FeatureScalePlugin implements ILayerPlugin {
    * 'w' => ['w']
    */
   private parseFields(
-    field: string[] | string | number[]
+    field: string[] | string | number | number[]
   ): string[] | number[] {
     if (Array.isArray(field)) {
       return field;

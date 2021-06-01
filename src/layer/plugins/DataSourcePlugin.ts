@@ -40,7 +40,6 @@ export default class DataSourcePlugin implements ILayerPlugin {
   public apply(layer: ILayer) {
     this.mapService = layer.getContainer().get<IMapService>(TYPES.IMapService);
     layer.hooks.init.tap('DataSourcePlugin', () => {
-      console.log('进入DataSourcePlugin');
       const { data } = layer.sourceOption;
       layer.setSource(new Source(data));
     });
@@ -49,6 +48,7 @@ export default class DataSourcePlugin implements ILayerPlugin {
     layer.hooks.beforeRenderData.tap('DataSourcePlugin', () => {
       const dataSourceNeedUpdate = layer.dataState.dataSourceNeedUpdate;
       layer.dataState.dataSourceNeedUpdate = false;
+      //传递给FeatureScale
       return dataSourceNeedUpdate;
     });
   }
