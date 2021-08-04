@@ -67,6 +67,10 @@ sence.addLayer(bubble)
 
 依赖注入
 
+### WebGL渲染引擎
+
+regl.GL
+
 ### 文档编写、开发环境
 
 采用`storybook`的方式；
